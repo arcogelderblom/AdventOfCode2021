@@ -1,2 +1,2 @@
-add_executable(Day1 day1.cpp)
-target_link_libraries(Day1 LINK_PUBLIC Common)
+add_executable(Day01 day1.cpp)
+target_link_libraries(Day01 LINK_PUBLIC Common)
