@@ -34,7 +34,7 @@ int main(void)
     std::vector<int> testInput {199, 200, 208, 210, 200, 207, 240, 269, 260, 263};
     assert(getIncreaseCount(testInput) == 7);
 
-    InputFile inputFile("InputFiles/day1.txt");
+    InputFile inputFile("InputFiles/day01.txt");
     std::vector<int> measurements = inputFile.getContentAsInt("\n");
     std::cout << "Day 1, puzzle 1: " << getIncreaseCount(measurements) << std::endl;
 
