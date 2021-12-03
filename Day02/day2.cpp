@@ -14,7 +14,7 @@ int main(void)
     std::vector<std::string> commands = inputFile.getContentAsString("\n");
     Submarine submarine;
     submarine.travel(commands);
-    std::cout << "Day 1, puzzle 1: " << submarine.getHorizontalPosition() * submarine.getDepth() << std::endl;
+    std::cout << "Day 2, puzzle 1: " << submarine.getHorizontalPosition() * submarine.getDepth() << std::endl;
     
     Submarine testInputSubmarine2;
     testInputSubmarine2.travel(testInput, true);
@@ -22,5 +22,5 @@ int main(void)
 
     Submarine submarine2;
     submarine2.travel(commands, true);
-    std::cout << "Day 1, puzzle 2: " << submarine2.getHorizontalPosition() * submarine2.getDepth() << std::endl;
+    std::cout << "Day 2, puzzle 2: " << submarine2.getHorizontalPosition() * submarine2.getDepth() << std::endl;
 }
