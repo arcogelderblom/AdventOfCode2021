@@ -1,0 +1,14 @@
+name: build and run
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # build project
+    - name: build and run all
+      run: ./build_and_run_all_days.sh
