@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
