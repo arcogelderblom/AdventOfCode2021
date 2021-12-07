@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <map>
+#include <algorithm>
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
