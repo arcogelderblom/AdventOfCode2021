@@ -1,4 +1,5 @@
 #include "bingo.hpp"
+#include <algorithm>
 
 Bingo::Bingo(std::vector<std::string> bingoCards)
 {

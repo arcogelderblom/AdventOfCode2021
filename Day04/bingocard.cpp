@@ -2,6 +2,7 @@
 #include "vectoroperations.hpp"
 #include "stringoperations.hpp"
 #include <iostream>
+#include <algorithm>
 
 BingoCard::BingoCard(std::string card)
 {
