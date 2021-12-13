@@ -63,13 +63,13 @@ int main(void)
     std::set<Coordinate> inputDots = toCoordinates(StringOperations::splitString(inputFile.getContentAsString("\n\n")[0], "\n"));
     std::vector<std::string> inputInstructions = StringOperations::splitString(inputFile.getContentAsString("\n\n")[1], "\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 12, puzzle 1: " << executeInstructions(inputDots, inputInstructions, 1).size() << std::endl;
+    std::cout << "Day 13, puzzle 1: " << executeInstructions(inputDots, inputInstructions, 1).size() << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     t_begin = std::chrono::high_resolution_clock::now();
     std::set<Coordinate> dots = executeInstructions(inputDots, inputInstructions, inputInstructions.size());
-    std::cout << "Day 12, puzzle 2: " << std::endl;
+    std::cout << "Day 13, puzzle 2: " << std::endl;
     int maxY = 0;
     for (Coordinate dot : dots)
     {
