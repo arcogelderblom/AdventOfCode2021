@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <chrono>
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
@@ -157,10 +158,16 @@ int main(void)
     
     InputFile inputFile("InputFiles/day11.txt");
     std::vector< std::vector<int> > input = VectorOperations::stringVectorToSeparatedIntVector(inputFile.getContentAsString("\n"));
+    auto t_begin = std::chrono::high_resolution_clock::now();
     int totalFlashes = 0;
     simulateSteps(input, totalFlashes, 100);
     std::cout << "Day 11, puzzle 1: " << totalFlashes << std::endl;
+    auto t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getFirstStepAllFlash(testMap, totalFlashesTest, 100) == 195);
+    t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 11, puzzle 2: " << getFirstStepAllFlash(input, totalFlashes, 100) << std::endl;
+    t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <chrono>
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
@@ -78,26 +79,18 @@ std::set< std::vector<std::string> > findAllPaths(std::vector< std::vector<std::
         unfinishedPaths.insert(unfinishedPathsToAdd.begin(), unfinishedPathsToAdd.end());
         
         // remove dead ends
-        for (const std::vector<std::string> &  deadEnd : deadEnds)
+        for (const std::vector<std::string> & deadEnd : deadEnds)
         {
             unfinishedPaths.erase(deadEnd);
         }
 
-        // check for finished paths
-        int oldPathsSize = paths.size();
-        for (const std::vector<std::string> & path: unfinishedPaths)
+        unfinishedPathsCopy = unfinishedPaths;
+        for (const std::vector<std::string> & path: unfinishedPathsCopy)
         {
             if (path.back() == "end")
             {
                 //finished path
                 paths.insert(path);
-            }
-        }
-        
-        for (auto path : paths)
-        {
-            if (oldPaths.find(path) == oldPaths.end()) // path is new
-            {
                 unfinishedPaths.erase(path);
             }
         }
@@ -119,10 +112,17 @@ int main(void)
     
     InputFile inputFile("InputFiles/day12.txt");
     std::vector< std::vector<std::string> > input = VectorOperations::splitVectorInSubVectors(inputFile.getContentAsString("\n"), "-");
+    auto t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 12, puzzle 1: " << findAllPaths(input).size() << std::endl;
+    auto t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(findAllPaths(testInput1, true).size() == 36);
     assert(findAllPaths(testInput2, true).size() == 103);
     assert(findAllPaths(testInput3, true).size() == 3509);
+
+    t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 12, puzzle 2: " << findAllPaths(input, true).size() << std::endl;
+    t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

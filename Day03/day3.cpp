@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <algorithm>
+#include <chrono>
 
 #include "inputfile.hpp"
 
@@ -125,8 +126,14 @@ int main(void)
     InputFile inputFile("InputFiles/day03.txt");
     std::vector<std::string> diagnosticReport = inputFile.getContentAsString("\n");
 
+    auto t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 3, puzzle 1: " << getPowerConsumption(diagnosticReport) << std::endl;
+    auto t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getLifeSupplyRating(testData) == 230);
+    t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 3, puzzle 2: " << getLifeSupplyRating(diagnosticReport) << std::endl;
+    t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

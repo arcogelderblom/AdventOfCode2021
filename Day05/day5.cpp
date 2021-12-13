@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <cassert>
+#include <chrono>
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
@@ -173,9 +174,15 @@ int main(void)
     assert(findAmountOfOverlaps(filterVerticalAndHorizontalLines(linesOfVentsCoordinatesTest)) == 5);
 
     InputFile inputFile("InputFiles/day05.txt");
+    auto t_begin = std::chrono::high_resolution_clock::now();
     std::vector<LinePoint> linesOfVentsCoordinates = toLinePoint(inputFile.getContentAsString("\n"));
     std::cout << "Day 5, puzzle 1: " << findAmountOfOverlaps(filterVerticalAndHorizontalLines(linesOfVentsCoordinates)) << std::endl;
+    auto t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(findAmountOfOverlaps(linesOfVentsCoordinatesTest) == 12);
+    t_begin = std::chrono::high_resolution_clock::now();
     std::cout << "Day 5, puzzle 2: " << findAmountOfOverlaps(linesOfVentsCoordinates) << std::endl;
+    t_end = std::chrono::high_resolution_clock::now();
+    std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }
