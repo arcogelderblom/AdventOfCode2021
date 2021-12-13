@@ -21,3 +21,13 @@ std::vector<int> VectorOperations::stringVectorToIntVector(std::vector<std::stri
     }
     return result;
 }
+
+std::vector< std::vector<int> > VectorOperations::stringVectorToSeparatedIntVector(std::vector<std::string> stringVector)
+{
+    std::vector< std::vector<int> > result;
+    for (std::string line : stringVector)
+    {
+        result.push_back(StringOperations::splitStringIntoSeparateNum(line));
+    }
+    return result;
+}

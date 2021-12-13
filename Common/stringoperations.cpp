@@ -19,3 +19,13 @@ std::vector<std::string> StringOperations::splitString(std::string stringToSplit
     result.push_back(stringToSplit);
     return result;
 }
+
+std::vector<int> StringOperations::splitStringIntoSeparateNum(std::string stringToSplit)
+{
+    std::vector<int> separatedNums;
+    for (char c : stringToSplit)
+    {
+        separatedNums.push_back(c - '0');
+    }
+    return separatedNums;
+}
