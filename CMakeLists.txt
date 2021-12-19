@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 project(AdventOfCode2021)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(Common)
 
@@ -19,3 +19,7 @@ add_subdirectory(Day10)
 add_subdirectory(Day11)
 add_subdirectory(Day12)
 add_subdirectory(Day13)
+add_subdirectory(Day14)
+add_subdirectory(Day15)
+add_subdirectory(Day16)
+add_subdirectory(Day17)
