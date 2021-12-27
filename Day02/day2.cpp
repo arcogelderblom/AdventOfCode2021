@@ -17,7 +17,7 @@ int main(void)
     auto t_begin = std::chrono::high_resolution_clock::now();
     Submarine submarine;
     submarine.travel(commands);
-    std::cout << "Day 2, puzzle 1: " << submarine.getHorizontalPosition() * submarine.getDepth() << std::endl;
+    std::cout << "Day 2, puzzle 1: " << std::flush << submarine.getHorizontalPosition() * submarine.getDepth() << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
     
@@ -28,7 +28,7 @@ int main(void)
     t_begin = std::chrono::high_resolution_clock::now();
     Submarine submarine2;
     submarine2.travel(commands, true);
-    std::cout << "Day 2, puzzle 2: " << submarine2.getHorizontalPosition() * submarine2.getDepth() << std::endl;
+    std::cout << "Day 2, puzzle 2: " << std::flush << submarine2.getHorizontalPosition() * submarine2.getDepth() << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

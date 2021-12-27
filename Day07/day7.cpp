@@ -43,13 +43,13 @@ int main(void)
     InputFile inputFile("InputFiles/day07.txt");
     std::vector<int> initialStatePositions = inputFile.getContentAsInt(",");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 7, puzzle 1: " << getLeastFuelCommonPosition(initialStatePositions, false) << std::endl;
+    std::cout << "Day 7, puzzle 1: " << std::flush << getLeastFuelCommonPosition(initialStatePositions, false) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getLeastFuelCommonPosition(initialStatePositionsTest, true) == 168);
     t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 7, puzzle 2: " << getLeastFuelCommonPosition(initialStatePositions, true) << std::endl;
+    std::cout << "Day 7, puzzle 2: " << std::flush << getLeastFuelCommonPosition(initialStatePositions, true) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

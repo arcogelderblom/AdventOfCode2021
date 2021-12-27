@@ -81,13 +81,13 @@ int main(void)
     std::string polymerTemplate = input[0];
     std::vector<std::string> pairInsertionRules = StringOperations::splitString(input[1], "\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 14, puzzle 1: " << getResult(polymerTemplate, pairInsertionRules, 10) << std::endl;
+    std::cout << "Day 14, puzzle 1: " << std::flush << getResult(polymerTemplate, pairInsertionRules, 10) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getResult(testPolymerTemplate, testPairInsertionRules, 40) == 2188189693529);
     t_begin = std::chrono::high_resolution_clock::now();    
-    std::cout << "Day 14, puzzle 2: " << getResult(polymerTemplate, pairInsertionRules, 40) << std::endl;
+    std::cout << "Day 14, puzzle 2: " << std::flush << getResult(polymerTemplate, pairInsertionRules, 40) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

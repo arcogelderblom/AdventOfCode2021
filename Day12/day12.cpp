@@ -113,7 +113,7 @@ int main(void)
     InputFile inputFile("InputFiles/day12.txt");
     std::vector< std::vector<std::string> > input = VectorOperations::splitVectorInSubVectors(inputFile.getContentAsString("\n"), "-");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 12, puzzle 1: " << findAllPaths(input).size() << std::endl;
+    std::cout << "Day 12, puzzle 1: " << std::flush << findAllPaths(input).size() << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
@@ -122,7 +122,7 @@ int main(void)
     assert(findAllPaths(testInput3, true).size() == 3509);
 
     t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 12, puzzle 2: " << findAllPaths(input, true).size() << std::endl;
+    std::cout << "Day 12, puzzle 2: " << std::flush << findAllPaths(input, true).size() << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

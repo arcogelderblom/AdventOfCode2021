@@ -39,13 +39,13 @@ int main(void)
     InputFile inputFile("InputFiles/day01.txt");
     std::vector<int> measurements = inputFile.getContentAsInt("\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 1, puzzle 1: " << getIncreaseCount(measurements) << std::endl;
+    std::cout << "Day 1, puzzle 1: " << std::flush << getIncreaseCount(measurements) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getIncreaseCountSum(testInput) == 5);
     t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 1, puzzle 2: " << getIncreaseCountSum(measurements) << std::endl;
+    std::cout << "Day 1, puzzle 2: " << std::flush << getIncreaseCountSum(measurements) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

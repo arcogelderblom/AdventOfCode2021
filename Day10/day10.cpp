@@ -125,13 +125,13 @@ int main(void)
     InputFile inputFile("InputFiles/day10.txt");
     std::vector<std::string> navigationSubsystem = inputFile.getContentAsString("\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 10, puzzle 1: " << getTotalSyntaxErrorScore(navigationSubsystem) << std::endl;
+    std::cout << "Day 10, puzzle 1: " << std::flush << getTotalSyntaxErrorScore(navigationSubsystem) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getMiddleAutocompleteScore(testNavigationSubsystem) == 288957);
     t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 10, puzzle 2: " << getMiddleAutocompleteScore(navigationSubsystem) << std::endl;
+    std::cout << "Day 10, puzzle 2: " << std::flush << getMiddleAutocompleteScore(navigationSubsystem) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

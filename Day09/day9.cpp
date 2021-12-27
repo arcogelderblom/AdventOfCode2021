@@ -130,13 +130,13 @@ int main(void)
     InputFile inputFile("InputFiles/day09.txt");
     std::vector<std::string> input = inputFile.getContentAsString("\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 9, puzzle 1: " << getSumRiskLevels(input) << std::endl;
+    std::cout << "Day 9, puzzle 1: " << std::flush << getSumRiskLevels(input) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     // assert(getMultipliedThreeLargestBasins(testMap) == 1134);
     t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 9, puzzle 2: " << getMultipliedThreeLargestBasins(input) << std::endl;
+    std::cout << "Day 9, puzzle 2: " << std::flush << getMultipliedThreeLargestBasins(input) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

@@ -24,7 +24,7 @@ int main(void)
     auto t_begin = std::chrono::high_resolution_clock::now();
     Bingo game(bingoCards);
     int finalScore = game.play(numbersDrawn);
-    std::cout << "Day 4, puzzle 1: " << finalScore << std::endl;
+    std::cout << "Day 4, puzzle 1: " << std::flush << finalScore << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
@@ -34,7 +34,7 @@ int main(void)
     t_begin = std::chrono::high_resolution_clock::now();
     Bingo game2(bingoCards);
     finalScore = game2.play(numbersDrawn, true);
-    std::cout << "Day 4, puzzle 2: " << finalScore << std::endl;
+    std::cout << "Day 4, puzzle 2: " << std::flush << finalScore << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

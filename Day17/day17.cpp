@@ -199,13 +199,13 @@ int main(void)
     InputFile inputFile("InputFiles/day17.txt");
     std::string input = inputFile.getContentAsString("\n")[0];
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 17, puzzle 1: " << getHighestY(input) << std::endl;
+    std::cout << "Day 17, puzzle 1: " << std::flush << getHighestY(input) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getAmountDistinctInitialVelocities(testInput) == 112);    
     t_begin = std::chrono::high_resolution_clock::now();    
-    std::cout << "Day 17, puzzle 2: " << getAmountDistinctInitialVelocities(input) << std::endl;
+    std::cout << "Day 17, puzzle 2: " << std::flush << getAmountDistinctInitialVelocities(input) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

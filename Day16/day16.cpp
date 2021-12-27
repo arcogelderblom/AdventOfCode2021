@@ -241,7 +241,7 @@ int main(void)
     InputFile inputFile("InputFiles/day16.txt");
     std::string input = inputFile.getContentAsString("\n")[0];
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 16, puzzle 1: " << getVersionSumAllPackets(input)  << std::endl;
+    std::cout << "Day 16, puzzle 1: " << std::flush << getVersionSumAllPackets(input)  << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
@@ -264,7 +264,7 @@ int main(void)
     assert(getPacketValue(getPackets(testInput12)[0]) == 1);
     
     t_begin = std::chrono::high_resolution_clock::now();    
-    std::cout << "Day 16, puzzle 2: " << getPacketValue(getPackets(input)[0]) << std::endl;
+    std::cout << "Day 16, puzzle 2: " << std::flush << getPacketValue(getPackets(input)[0]) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }

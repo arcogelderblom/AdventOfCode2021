@@ -9,7 +9,6 @@ typedef std::pair<int,int> Coordinate;
 
 std::vector<int> getPossibleRisks(std::vector<std::string> riskLevelMap, Coordinate startCoordinate, int depth, int currentDepth = 0)
 {
-    // std::cout << depth << ", " << currentDepth << std::endl;
     if (currentDepth == depth)
     {
         return std::vector<int> { 0 };
@@ -21,17 +20,10 @@ std::vector<int> getPossibleRisks(std::vector<std::string> riskLevelMap, Coordin
     {
         int currentRiskLevel = riskLevelMap[startCoordinate.first][startCoordinate.second] - '0';
         std::vector<int> riskLevelsToAdd = getPossibleRisks(riskLevelMap, coordinateMoveRight, depth, currentDepth+1);
-        // std::cout << currentRiskLevel << std::endl;
         for (int riskLevelToAdd : riskLevelsToAdd)
         {
-            // std::cout << riskLevelToAdd << " | ";
             result.push_back(currentRiskLevel + riskLevelToAdd);
         }
-        // std::cout << std::endl;
-        // if (currentDepth > 1)
-        // {
-        //     return result;
-        // }
     }
     if (coordinateMoveDown.first < riskLevelMap[0].size())
     {
@@ -40,19 +32,8 @@ std::vector<int> getPossibleRisks(std::vector<std::string> riskLevelMap, Coordin
         // std::cout << currentRiskLevel << std::endl;
         for (int riskLevelToAdd : riskLevelsToAdd)
         {
-            // std::cout << riskLevelToAdd << " | ";
             result.push_back(currentRiskLevel + riskLevelToAdd);
         }
-        // std::cout << std::endl;
-        // if (currentDepth > 1)
-        // {
-        //     return result;
-        // }
-    }
-
-    if (result.empty())
-    {
-        return std::vector<int> { 0 };
     }
     return result; 
 }
@@ -69,14 +50,11 @@ int findPathLowestRisk(std::vector<std::string> riskLevelMap)
         {
             currentPosition = endPosition;
             risk += riskLevelMap[currentPosition.first][currentPosition.second] - '0';
-            std::cout << riskLevelMap[currentPosition.first][currentPosition.second] << std::endl;
         }
         else if (std::make_pair(currentPosition.first, currentPosition.second + 1) == endPosition)
         {
             currentPosition = endPosition;
             risk += riskLevelMap[currentPosition.first][currentPosition.second] - '0';
-            std::cout << riskLevelMap[currentPosition.first][currentPosition.second] << std::endl;
-            // return risk;
         }
 
         if (currentPosition.first < riskLevelMap[0].size() - 1 && currentPosition.second < riskLevelMap.size() - 1)
@@ -85,16 +63,7 @@ int findPathLowestRisk(std::vector<std::string> riskLevelMap)
             Coordinate coordinateMoveDown = std::make_pair(currentPosition.first + 1, currentPosition.second);
             std::vector<int> possibleRisksRight = getPossibleRisks(riskLevelMap, coordinateMoveRight, 3);
             std::vector<int> possibleRiskDown = getPossibleRisks(riskLevelMap, coordinateMoveDown, 3);
-            for (int possibleRisk : possibleRisksRight)
-            {
-                // std::cout << possibleRisk << ", ";
-            }
-            for (int possibleRisk : possibleRiskDown)
-            {
-                // std::cout << possibleRisk << ", ";
-            }
             
-            // std::cout << std::endl;
             std::sort(possibleRisksRight.begin(), possibleRisksRight.end());
             std::sort(possibleRiskDown.begin(), possibleRiskDown.end());
             if (possibleRisksRight < possibleRiskDown)
@@ -138,7 +107,7 @@ int main(void)
     InputFile inputFile("InputFiles/day15.txt");
     std::vector<std::string> input = inputFile.getContentAsString("\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 15, puzzle 1: " << findPathLowestRisk(input) << " <-- NOT YET FINISHED..." << std::endl;
+//    std::cout << "Day 15, puzzle 1: " << std::flush << findPathLowestRisk(input) << " <-- NOT YET FINISHED..." << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 

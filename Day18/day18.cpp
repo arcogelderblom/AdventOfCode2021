@@ -173,13 +173,13 @@ int main(void)
     InputFile inputFile("InputFiles/day18.txt");
     std::vector<std::string> input = inputFile.getContentAsString("\n");
     auto t_begin = std::chrono::high_resolution_clock::now();
-    std::cout << "Day 18, puzzle 1: " << getMagnitude(input) << std::endl;
+    std::cout << "Day 18, puzzle 1: " << std::flush << getMagnitude(input) << std::endl;
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
     assert(getLargestPossibleMagnitude(testInput2) == 3993);    
     t_begin = std::chrono::high_resolution_clock::now();    
-    std::cout << "Day 18, puzzle 2: " << getLargestPossibleMagnitude(input) << std::endl;
+    std::cout << "Day 18, puzzle 2: " << std::flush << getLargestPossibleMagnitude(input) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }
