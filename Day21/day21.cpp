@@ -12,9 +12,15 @@ struct Player
 	int playerNum;
 	int score = 0;
     int currentPos;
-    friend bool operator<(const Player& lhs, const Player& rhs) //friend claim has to be here
+    friend bool operator<(const Player& lhs, const Player& rhs)
     {
         return lhs.playerNum < rhs.playerNum && lhs.score < rhs.score && lhs.currentPos < rhs.currentPos;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Player& p)
+    {
+        os << "Player " << p.playerNum << " | Current position: " << p.currentPos << " | Score: " << p.score;
+        return os;
     }
 };
 
@@ -87,20 +93,20 @@ long play(std::vector<Player> players, int diceSides, int winningScore)
 
 
 // map which holds game state and outcome
-std::map< std::vector<Player>, std::pair<long long, long long> > gameStateAndOutcome;
-std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player>& players, int diceSides, int winningScore)
+std::map< std::tuple<int, int, int, int, int>, std::pair<long long, long long> > gameStateAndOutcome;
+std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player>& players, int& currentPlayerIndex, int diceSides, int winningScore)
 {
-    if (std::find_if(players.begin(), players.end(), [&](const Player & p){ return p.playerNum == 1; })->score >= winningScore)
+    if (std::find_if(players.begin(), players.end(), [&](Player p){ return p.score >= winningScore; }) != players.end())
     {
-        return std::make_pair(1, 0);
+        int winningPlayer = std::find_if(players.begin(), players.end(), [&](Player p){ return p.score >= winningScore; })->playerNum;
+        return winningPlayer == 1 ? std::make_pair(1, 0) : std::make_pair(0, 1);
     }
-    if (std::find_if(players.begin(), players.end(), [&](const Player & p){ return p.playerNum == 2; })->score >= winningScore)
+
+    int otherPlayerIndex = currentPlayerIndex == 0 ? currentPlayerIndex + 1 : currentPlayerIndex - 1;
+    if (gameStateAndOutcome.find(std::make_tuple(players[0].score, players[0].currentPos, players[1].score, players[1].currentPos, currentPlayerIndex)) != gameStateAndOutcome.end())
     {
-        return std::make_pair(0, 1);
-    }
-    if (gameStateAndOutcome.find(players) != gameStateAndOutcome.end())
-    {
-        return gameStateAndOutcome[players];
+    //     std::cout << "Already seen: " << ">>" << players[currentPlayerIndex] << "<< " << players[otherPlayerIndex] << std::endl;
+        return gameStateAndOutcome[std::make_tuple(players[0].score, players[0].currentPos, players[1].score, players[1].currentPos, currentPlayerIndex)];
     }
 
     std::pair<long long, long long> outcome = std::make_pair(0, 0);
@@ -110,8 +116,11 @@ std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player
         {
             for (int d3 = 1; d3 <= diceSides; d3++)
             {   
+                std::vector<Player> playersBefore = players;
+                // std::cout << std::endl << "d1: " << d1 << " d2: " << d2 << " d3: " << d3 << std::endl;
                 int stepsToTake = (d1 + d2 + d3) % 10;
-                Player& currentPlayer = players[0];
+                Player& currentPlayer = players[currentPlayerIndex];
+                // std::cout << currentPlayer << std::endl;    
                 int newPosition = currentPlayer.currentPos;
                 // move player
                 for (int i = 0; i < stepsToTake; i++)
@@ -122,17 +131,24 @@ std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player
                         newPosition -= 10;
                     }
                 }
+                if (newPosition <= 0 || newPosition > 10)
+                {
+                    std::cout << newPosition << std::endl;
+                }
                 currentPlayer.currentPos = newPosition;
                 currentPlayer.score += newPosition;
-
-                std::reverse(players.begin(), players.end());
-                std::pair<long long, long long> result = getHowManyUniversesPlayerWins(players, diceSides, winningScore);
+                int currentPlayerIndexBefore = currentPlayerIndex;
+                currentPlayerIndex = currentPlayerIndex == 0 ? currentPlayerIndex + 1 : currentPlayerIndex - 1;
+                std::pair<long long, long long> result = getHowManyUniversesPlayerWins(players, currentPlayerIndex, diceSides, winningScore);
                 outcome.first += result.first;
                 outcome.second += result.second;
+                players = playersBefore;
+                currentPlayerIndex = currentPlayerIndexBefore;
             }
         }
     }
-    gameStateAndOutcome[players] = outcome;
+    otherPlayerIndex = currentPlayerIndex == 0 ? currentPlayerIndex + 1 : currentPlayerIndex - 1;
+    gameStateAndOutcome[std::make_tuple(players[0].score, players[0].currentPos, players[1].score, players[1].currentPos, currentPlayerIndex)] = outcome;
     return outcome;
 }
 
@@ -150,13 +166,13 @@ int main(void)
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
-    std::pair<long long, long long> testResult = getHowManyUniversesPlayerWins(testVectorWithPlayers, 3, 21);
-    std::cout << testResult.first << std::endl;
-    std::cout << testResult.second << std::endl;
-    assert((testResult.first > testResult.second ? testResult.first : testResult.second)  == 444356092776315);
+    int startPlayerNumIndexTest = 0;
+    std::pair<long long, long long> testResult = getHowManyUniversesPlayerWins(testVectorWithPlayers, startPlayerNumIndexTest, 3, 21);
+    assert(std::max(testResult.first, testResult.second) == 444356092776315);
     t_begin = std::chrono::high_resolution_clock::now();    
-    std::pair<long long, long long> result = getHowManyUniversesPlayerWins(vectorWithPlayers, 3, 21);
-    std::cout << "Day 21, puzzle 2: " << std::flush << (result.first > result.second ? result.first : result.second) << std::endl;
+    int startPlayerNumIndex = 0;
+    std::pair<long long, long long> result = getHowManyUniversesPlayerWins(vectorWithPlayers, startPlayerNumIndex, 3, 21);
+    std::cout << "Day 21, puzzle 2: " << std::flush << std::max(result.first, result.second) << std::endl;
     t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Completed in: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 }
