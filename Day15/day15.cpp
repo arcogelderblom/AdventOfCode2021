@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <tuple> 
+#include <map> 
 
 #include "inputfile.hpp"
 #include "stringoperations.hpp"
@@ -22,6 +23,12 @@ struct Node
     Coordinate parentCoordinate;
     int globalScore; // how much to get here + how much until the end
     int localScore; // how much to get here
+    Node() :
+        thisNodeCoordinate(NO_PARENT),
+        parentCoordinate(NO_PARENT),
+        globalScore(0),
+        localScore(0)
+    {}
     Node(Coordinate _thisNodeCoordinate, Coordinate _parentCoordinate, int _globalScore,int _localScore) :
         thisNodeCoordinate(_thisNodeCoordinate),
         parentCoordinate(_parentCoordinate),
@@ -44,7 +51,7 @@ int calculateDistanceToEnd(Coordinate start, Coordinate end)
     return std::abs(end.first - start.first) + std::abs(end.second - start.second);
 }
 
-void visitNode(const Node& nodeToVisit, std::vector<Node>& allDiscoveredNodes, std::vector<std::pair<Coordinate, int>>& coordinatesToVisit, const std::vector<Coordinate>& visitedCoordinates, const Coordinate& endCoordinate, const std::vector<std::string>& riskLevelMap)
+void visitNode(const Node& nodeToVisit, std::map<Coordinate, Node>& allDiscoveredNodes, std::vector<Node>& nodesToVisit, const std::vector<Coordinate>& visitedCoordinates, const Coordinate& endCoordinate, const std::vector<std::string>& riskLevelMap)
 {
     Coordinate coordinateMoveUp = std::make_pair(nodeToVisit.thisNodeCoordinate.first - 1, nodeToVisit.thisNodeCoordinate.second);
     Coordinate coordinateMoveDown = std::make_pair(nodeToVisit.thisNodeCoordinate.first + 1, nodeToVisit.thisNodeCoordinate.second);
@@ -76,25 +83,27 @@ void visitNode(const Node& nodeToVisit, std::vector<Node>& allDiscoveredNodes, s
         {
             int distance = nodeToVisit.localScore + (riskLevelMap[possibleCoordinate.first][possibleCoordinate.second] - '0'); // calculated local
             // check if node is in vector already
-            auto node = std::find_if(allDiscoveredNodes.begin(), allDiscoveredNodes.end(), [&](Node node){ return node.thisNodeCoordinate == possibleCoordinate; });
-            if (node != allDiscoveredNodes.end())
+            // auto node = std::find_if(allDiscoveredNodes.begin(), allDiscoveredNodes.end(), [&](const Node& node){ return node.thisNodeCoordinate == possibleCoordinate; });
+            if (allDiscoveredNodes.find(possibleCoordinate) != allDiscoveredNodes.end())
             {
                 // present, check if route is shorter
-                if (distance < node->localScore)
+                if (distance < allDiscoveredNodes[possibleCoordinate].localScore)
                 {
-                    node->localScore = distance;
-                    node->globalScore = calculateDistanceToEnd(possibleCoordinate, endCoordinate) + distance;
-                    node->parentCoordinate = nodeToVisit.thisNodeCoordinate;
+                    allDiscoveredNodes[possibleCoordinate].localScore = distance;
+                    allDiscoveredNodes[possibleCoordinate].globalScore = calculateDistanceToEnd(possibleCoordinate, endCoordinate) + distance;
+                    allDiscoveredNodes[possibleCoordinate].parentCoordinate = nodeToVisit.thisNodeCoordinate;
                     if (possibleCoordinate != endCoordinate)
                     {
-                        auto coordinateToVisitInVector = std::find_if(coordinatesToVisit.begin(), coordinatesToVisit.end(), [&](std::pair<Coordinate, int> item){ return item.first == possibleCoordinate; });
-                        if (coordinateToVisitInVector == coordinatesToVisit.end())
+                        auto nodeToVisitInVector = std::find_if(nodesToVisit.begin(), nodesToVisit.end(), [&](const Node& node){ return node.thisNodeCoordinate == possibleCoordinate; });
+                        if (nodeToVisitInVector == nodesToVisit.end())
                         {
-                            coordinatesToVisit.push_back(std::make_pair(possibleCoordinate, node->globalScore));
+                            nodesToVisit.push_back(allDiscoveredNodes[possibleCoordinate]);
                         }
                         else
                         {
-                            coordinateToVisitInVector->second = node->globalScore;
+                            nodeToVisitInVector->localScore = allDiscoveredNodes[possibleCoordinate].localScore;
+                            nodeToVisitInVector->globalScore = allDiscoveredNodes[possibleCoordinate].globalScore;
+                            nodeToVisitInVector->parentCoordinate = allDiscoveredNodes[possibleCoordinate].parentCoordinate;
                         }    
                     
                     }
@@ -104,10 +113,10 @@ void visitNode(const Node& nodeToVisit, std::vector<Node>& allDiscoveredNodes, s
             {
                 // not yet present, add
                 Node newNode(possibleCoordinate, nodeToVisit.thisNodeCoordinate, calculateDistanceToEnd(possibleCoordinate, endCoordinate) + distance, distance);
-                allDiscoveredNodes.push_back(newNode);
+                allDiscoveredNodes[possibleCoordinate] = newNode;
                 if (possibleCoordinate != endCoordinate)
                 {
-                    coordinatesToVisit.push_back(std::make_pair(possibleCoordinate, newNode.globalScore));
+                    nodesToVisit.push_back(newNode);
                 }
             }
         }
@@ -141,29 +150,30 @@ int findPathLowestRisk(std::vector<std::string> riskLevelMap)
     Coordinate endPosition = std::make_pair<int,int>(riskLevelMap.size() - 1, riskLevelMap[0].size() - 1);
 
     Node startNode(startPosition, NO_PARENT, calculateDistanceToEnd(startPosition, endPosition), 0);
-    std::vector<Node> allDiscoveredNodes;
-    std::vector<std::pair<Coordinate, int>> coordinatesToVisit; // holds coordinates to visit and globalScore
+    std::map<Coordinate, Node> allDiscoveredNodes;
+    std::vector<Node> nodesToVisit; // holds coordinates to visit and globalScore
     std::vector<Coordinate> visitedCoordinates;
-    allDiscoveredNodes.push_back(startNode);
-    coordinatesToVisit.push_back(std::make_pair(startNode.thisNodeCoordinate, startNode.globalScore));
+    allDiscoveredNodes[startPosition] = startNode;
+    nodesToVisit.push_back(startNode);
 
-    while (!coordinatesToVisit.empty())
+    while (!nodesToVisit.empty())
     {
+        Node nodeToVisit = *nodesToVisit.begin();
+
         // auto t_begin = std::chrono::high_resolution_clock::now();    
-        Node nodeToVisit = *std::find_if(allDiscoveredNodes.begin(), allDiscoveredNodes.end(), [&](Node node){ return node.thisNodeCoordinate == (*coordinatesToVisit.begin()).first; });
+        visitNode(nodeToVisit, allDiscoveredNodes, nodesToVisit, visitedCoordinates, endPosition, riskLevelMap);
         // auto t_end = std::chrono::high_resolution_clock::now();
-        // std::cout << "Finding node took: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
+        // std::cout << "Visiting node took: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
 
         // t_begin = std::chrono::high_resolution_clock::now();    
-        visitNode(nodeToVisit, allDiscoveredNodes, coordinatesToVisit, visitedCoordinates, endPosition, riskLevelMap);
-        visitedCoordinates.push_back((*coordinatesToVisit.begin()).first);
-        coordinatesToVisit.erase(coordinatesToVisit.begin()); // remove visited coordinate
-        std::sort(coordinatesToVisit.begin(), coordinatesToVisit.end(), [](const std::pair<Coordinate, int>& item1, const std::pair<Coordinate, int>& item2){ return item1.second < item2.second; });
+        visitedCoordinates.push_back((*nodesToVisit.begin()).thisNodeCoordinate);
+        nodesToVisit.erase(nodesToVisit.begin()); // remove visited coordinate
+        std::sort(nodesToVisit.begin(), nodesToVisit.end(), [](const Node& node1, const Node& node2){ return node1.globalScore < node2.globalScore; });
         // t_end = std::chrono::high_resolution_clock::now();
-        // std::cout << "Visiting node and sorting took: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
+        // std::cout << "Sorting took: " << std::chrono::duration<double, std::milli>(t_end - t_begin).count() << " ms" << std::endl;
     }
 
-    return std::find_if(allDiscoveredNodes.begin(), allDiscoveredNodes.end(), [&](Node node){ return node.thisNodeCoordinate == endPosition; })->localScore;
+    return allDiscoveredNodes[endPosition].localScore;
 }
 
 std::vector<std::string> createFullMap(std::vector<std::string> riskLevelMap)
