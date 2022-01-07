@@ -105,7 +105,6 @@ std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player
     int otherPlayerIndex = currentPlayerIndex == 0 ? currentPlayerIndex + 1 : currentPlayerIndex - 1;
     if (gameStateAndOutcome.find(std::make_tuple(players[0].score, players[0].currentPos, players[1].score, players[1].currentPos, currentPlayerIndex)) != gameStateAndOutcome.end())
     {
-    //     std::cout << "Already seen: " << ">>" << players[currentPlayerIndex] << "<< " << players[otherPlayerIndex] << std::endl;
         return gameStateAndOutcome[std::make_tuple(players[0].score, players[0].currentPos, players[1].score, players[1].currentPos, currentPlayerIndex)];
     }
 
@@ -117,10 +116,8 @@ std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player
             for (int d3 = 1; d3 <= diceSides; d3++)
             {   
                 std::vector<Player> playersBefore = players;
-                // std::cout << std::endl << "d1: " << d1 << " d2: " << d2 << " d3: " << d3 << std::endl;
                 int stepsToTake = (d1 + d2 + d3) % 10;
-                Player& currentPlayer = players[currentPlayerIndex];
-                // std::cout << currentPlayer << std::endl;    
+                Player& currentPlayer = players[currentPlayerIndex];   
                 int newPosition = currentPlayer.currentPos;
                 // move player
                 for (int i = 0; i < stepsToTake; i++)
@@ -130,10 +127,6 @@ std::pair<long long, long long> getHowManyUniversesPlayerWins(std::vector<Player
                     {
                         newPosition -= 10;
                     }
-                }
-                if (newPosition <= 0 || newPosition > 10)
-                {
-                    std::cout << newPosition << std::endl;
                 }
                 currentPlayer.currentPos = newPosition;
                 currentPlayer.score += newPosition;
