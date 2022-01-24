@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 
 project(AdventOfCode2021)
 
-set (CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE Release)
 
 add_subdirectory(Common)
 
